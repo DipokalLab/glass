@@ -15,8 +15,8 @@ export default function GlassText({ text }: { text: string }) {
   });
 
   return (
-    <group ref={textRef} position={[0, 0, 0]}>
-      <Center>
+    <group ref={textRef}>
+      <Center key={text}>
         <Text3D
           size={1}
           font={fontUrl}
