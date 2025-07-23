@@ -22,6 +22,7 @@ import {
 import GlassText from "@/components/three/Text";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useCanvasRecorder } from "@/hooks/useCanvasRecorder";
 
 const Sidebar = () => {
   const menuItems = [
@@ -98,6 +99,8 @@ const ThreeScene = ({ text }: { text: string }) => {
 
   return (
     <Canvas
+      id="maincanvas"
+      gl={{ preserveDrawingBuffer: true }}
       camera={{ position: [0, 0, 7] }}
       className="rounded-lg border-2 border-gray-800"
       style={{ width: "512px", height: "512px" }}
@@ -155,6 +158,8 @@ const ThreeScene = ({ text }: { text: string }) => {
 
 export default function HomePage() {
   const [text, setText] = useState("Glass");
+  const { startRecording } = useCanvasRecorder("maincanvas");
+
   return (
     <div className="flex w-screen h-screen bg-white dark:bg-black">
       <Sidebar />
@@ -169,6 +174,7 @@ export default function HomePage() {
             placeholder="Text"
             onChange={(e) => setText(e.target.value)}
           />
+          <Button onClick={() => startRecording(2000)}>Record</Button>
         </main>
       </div>
     </div>
