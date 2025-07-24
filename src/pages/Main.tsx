@@ -22,6 +22,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
+import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
 
 const ThreeScene = ({ text }: { text: string }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
@@ -92,6 +93,7 @@ export default function HomePage() {
   const [isRecording, setIsRecording] = useState(false);
   const [progress, setProgress] = useState(0);
   const { startRecording } = useCanvasRecorder("maincanvas");
+  const { downloadImage } = useCanvasImageDownloader("maincanvas");
 
   const handleStartRecording = () => {
     if (isRecording) return;
@@ -118,13 +120,17 @@ export default function HomePage() {
     }, 50);
   };
 
+  const handleCapture = () => {
+    downloadImage();
+  };
+
   return (
     <div className="flex w-screen h-screen bg-white dark:bg-black">
       <Sidebar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 ">
         <Navbar />
-        <main className="flex-1 p-6">
-          <div className="flex w-full justify-center p-4 gap-2">
+        <main className="flex flex-col p-6 gap-2">
+          <div className="flex w-full justify-center p-4 ">
             <ThreeScene text={text} />
           </div>
           <Input
@@ -142,6 +148,10 @@ export default function HomePage() {
           {duration}
           <Button onClick={handleStartRecording} disabled={isRecording}>
             {isRecording ? "Recording..." : "Record"}
+          </Button>
+
+          <Button onClick={handleCapture} disabled={isRecording}>
+            Capture
           </Button>
 
           <Dialog open={isRecording} onOpenChange={setIsRecording}>
