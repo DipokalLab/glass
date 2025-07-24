@@ -32,11 +32,30 @@ export const useCanvasRecorder = (canvasId: string) => {
         return;
       }
 
+      const options = {
+        mimeType: "",
+      };
+
+      const MimeTypes = [
+        "video/webm;codecs=vp9",
+        "video/webm;codecs=vp8",
+        "video/webm",
+      ];
+
+      const supportedMimeType = MimeTypes.find((type) =>
+        MediaRecorder.isTypeSupported(type)
+      );
+
+      if (!supportedMimeType) {
+        console.error("No supported MIME type found for MediaRecorder");
+        return;
+      }
+
+      options.mimeType = supportedMimeType;
       setIsRecording(true);
       const stream = canvas.captureStream(30);
-      const recorder = new MediaRecorder(stream, {
-        mimeType: "video/webm;codecs=vp9",
-      });
+      const recorder = new MediaRecorder(stream, options);
+
       mediaRecorderRef.current = recorder;
 
       recorder.ondataavailable = (e: BlobEvent) => {

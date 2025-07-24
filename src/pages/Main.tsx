@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import { Home, Package, Menu, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Environment, Lightformer, OrbitControls } from "@react-three/drei";
@@ -21,77 +11,17 @@ import {
 } from "@react-three/postprocessing";
 import GlassText from "@/components/three/Text";
 import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/mode-toggle";
 import { useCanvasRecorder } from "@/hooks/useCanvasRecorder";
-
-const Sidebar = () => {
-  const menuItems = [
-    { name: "Dashboard", icon: Home },
-    { name: "Products", icon: Package },
-  ];
-
-  const sidebarContent = (
-    <div className="flex flex-col h-full text-black dark:text-white mt-4">
-      <nav className="flex-1 px-2">
-        {menuItems.map((item) => (
-          <a
-            key={item.name}
-            href="#"
-            className="flex items-center px-4 py-2 mt-2 text-sm font-medium rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
-          >
-            <item.icon className="w-5 h-5 mr-3" />
-            {item.name}
-          </a>
-        ))}
-      </nav>
-    </div>
-  );
-
-  return (
-    <>
-      <div className="hidden lg:block w-64 bg-white border-r border-gray-200 dark:bg-black dark:border-gray-800 shrink-0">
-        {sidebarContent}
-      </div>
-      <div className="lg:hidden">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="fixed top-4 left-4 z-50 text-gray-800 dark:text-white"
-            >
-              <Menu className="w-6 h-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 bg-white p-0 border-r-0">
-            {sidebarContent}
-          </SheetContent>
-        </Sheet>
-      </div>
-    </>
-  );
-};
-
-const Navbar = () => {
-  return (
-    <header className="flex items-center justify-end h-16 px-6 gap-2 bg-white border-b border-gray-200 dark:bg-black dark:border-gray-700 shrink-0">
-      <ModeToggle />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="default">
-            <Download />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Log out</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </header>
-  );
-};
+import { Slider } from "@/components/ui/slider";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
+import { Sidebar } from "@/features/sidebar";
+import { Navbar } from "@/features/navbar";
 
 const ThreeScene = ({ text }: { text: string }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
@@ -158,7 +88,35 @@ const ThreeScene = ({ text }: { text: string }) => {
 
 export default function HomePage() {
   const [text, setText] = useState("Glass");
+  const [duration, setDuration] = useState(2000);
+  const [isRecording, setIsRecording] = useState(false);
+  const [progress, setProgress] = useState(0);
   const { startRecording } = useCanvasRecorder("maincanvas");
+
+  const handleStartRecording = () => {
+    if (isRecording) return;
+
+    setIsRecording(true);
+    setProgress(0);
+    startRecording(duration);
+
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const currentProgress = (elapsedTime / duration) * 100;
+
+      if (currentProgress >= 100) {
+        setProgress(100);
+        clearInterval(interval);
+        setTimeout(() => {
+          setIsRecording(false);
+          setProgress(0);
+        }, 500);
+      } else {
+        setProgress(currentProgress);
+      }
+    }, 50);
+  };
 
   return (
     <div className="flex w-screen h-screen bg-white dark:bg-black">
@@ -166,7 +124,7 @@ export default function HomePage() {
       <div className="flex flex-col flex-1">
         <Navbar />
         <main className="flex-1 p-6">
-          <div className="flex w-full justify-center p-4">
+          <div className="flex w-full justify-center p-4 gap-2">
             <ThreeScene text={text} />
           </div>
           <Input
@@ -174,7 +132,28 @@ export default function HomePage() {
             placeholder="Text"
             onChange={(e) => setText(e.target.value)}
           />
-          <Button onClick={() => startRecording(2000)}>Record</Button>
+          <Slider
+            value={[duration]}
+            onValueChange={(value) => setDuration(value[0])}
+            min={1000}
+            max={10000}
+            step={500}
+          />
+          {duration}
+          <Button onClick={handleStartRecording} disabled={isRecording}>
+            {isRecording ? "Recording..." : "Record"}
+          </Button>
+
+          <Dialog open={isRecording} onOpenChange={setIsRecording}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Recoding</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <Progress value={progress} />
+              </div>
+            </DialogContent>
+          </Dialog>
         </main>
       </div>
     </div>
