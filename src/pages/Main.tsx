@@ -23,67 +23,78 @@ import { Progress } from "@/components/ui/progress";
 import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const ThreeScene = ({ text }: { text: string }) => {
+const ThreeScene = ({ text, size = 512 }: { text: string; size: number }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
 
+  const displaySize = 512;
+
   return (
-    <Canvas
-      id="maincanvas"
-      gl={{ preserveDrawingBuffer: true }}
-      camera={{ position: [0, 0, 7] }}
-      className="rounded-lg border-2 border-gray-800"
-      style={{ width: "512px", height: "512px" }}
-    >
-      <color attach="background" args={["#000000"]} />
-      <ambientLight intensity={0.5} color={"#ffffff"} />
-      <directionalLight
-        position={[0, 100, 60]}
-        intensity={30}
-        color={"#ffffff"}
-      />
-      <Environment>
-        <Lightformer
-          form="rect"
-          intensity={4}
-          position={[-5, 5, -5]}
-          scale={4}
+    <div style={{ width: "512px", height: "512px" }}>
+      <Canvas
+        id="maincanvas"
+        gl={{ preserveDrawingBuffer: true }}
+        camera={{ position: [0, 0, 7] }}
+        className="rounded-lg border-2 border-gray-800"
+        dpr={size / displaySize}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <color attach="background" args={["#000000"]} />
+        <ambientLight intensity={0.5} color={"#ffffff"} />
+        <directionalLight
+          position={[0, 100, 60]}
+          intensity={30}
+          color={"#ffffff"}
         />
-        <Lightformer
-          form="rect"
-          intensity={4}
-          position={[5, 10, 5]}
-          scale={10}
-          map={texture}
-        />
-        <Lightformer
-          form="rect"
-          intensity={4}
-          position={[5, -5, 5]}
-          scale={10}
-          map={texture}
-        />
-        <Lightformer
-          form="rect"
-          intensity={4}
-          position={[-5, 0, 15]}
-          scale={30}
-          map={texture}
-        />
-      </Environment>
-      <GlassText text={text} />
-      <EffectComposer>
-        <Bloom
-          intensity={1.5}
-          luminanceThreshold={0.5}
-          luminanceSmoothing={0.025}
-          mipmapBlur
-        />
-        <ChromaticAberration offset={[0.001, 0.001]} />
-      </EffectComposer>
-      <OrbitControls enablePan={false} />
-    </Canvas>
+        <Environment>
+          <Lightformer
+            form="rect"
+            intensity={4}
+            position={[-5, 5, -5]}
+            scale={4}
+          />
+          <Lightformer
+            form="rect"
+            intensity={4}
+            position={[5, 10, 5]}
+            scale={10}
+            map={texture}
+          />
+          <Lightformer
+            form="rect"
+            intensity={4}
+            position={[5, -5, 5]}
+            scale={10}
+            map={texture}
+          />
+          <Lightformer
+            form="rect"
+            intensity={4}
+            position={[-5, 0, 15]}
+            scale={30}
+            map={texture}
+          />
+        </Environment>
+        <GlassText text={text} />
+        <EffectComposer>
+          <Bloom
+            intensity={1.5}
+            luminanceThreshold={0.5}
+            luminanceSmoothing={0.025}
+            mipmapBlur
+          />
+          <ChromaticAberration offset={[0.001, 0.001]} />
+        </EffectComposer>
+        <OrbitControls enablePan={false} />
+      </Canvas>
+    </div>
   );
 };
 
@@ -91,6 +102,7 @@ export default function HomePage() {
   const [text, setText] = useState("Glass");
   const [duration, setDuration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
+  const [size, setSize] = useState(512);
   const [progress, setProgress] = useState(0);
   const { startRecording } = useCanvasRecorder("maincanvas");
   const { downloadImage } = useCanvasImageDownloader("maincanvas");
@@ -130,8 +142,8 @@ export default function HomePage() {
       <div className="flex flex-col flex-1 ">
         <Navbar />
         <main className="flex flex-col p-6 gap-2">
-          <div className="flex w-full justify-center p-4 ">
-            <ThreeScene text={text} />
+          <div className="flex w-full justify-center p-4">
+            <ThreeScene text={text} size={size} />
           </div>
           <Input
             type="text"
@@ -153,6 +165,25 @@ export default function HomePage() {
           <Button onClick={handleCapture} disabled={isRecording}>
             Capture
           </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>Set Size</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setSize(128)}>
+                128x128
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSize(512)}>
+                512x512
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSize(1024)}>
+                1024x1024
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {size}
 
           <Dialog open={isRecording} onOpenChange={setIsRecording}>
             <DialogContent className="sm:max-w-[425px]">
