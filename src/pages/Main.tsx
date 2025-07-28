@@ -42,7 +42,7 @@ const ThreeScene = ({ text, size = 512 }: { text: string; size: number }) => {
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
         camera={{ position: [0, 0, 7] }}
-        className="rounded-lg border-2 border-gray-800"
+        className="rounded-lg border-1 border-gray-900"
         dpr={size / displaySize}
         style={{ width: "100%", height: "100%" }}
       >
@@ -140,7 +140,7 @@ export default function HomePage() {
     <div className="flex w-screen h-screen bg-white dark:bg-black">
       <Sidebar />
       <div className="flex flex-col flex-1 ">
-        <Navbar onRecord={handleStartRecording} onCapture={handleCapture} />
+        <Navbar />
         <main className="flex flex-col p-6 gap-2">
           <div className="flex w-full justify-center p-4">
             <ThreeScene text={text} size={size} />
@@ -158,6 +158,9 @@ export default function HomePage() {
             step={500}
           />
           {duration}
+
+          <Button onClick={handleStartRecording}>Record</Button>
+          <Button onClick={handleCapture}>Capture</Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

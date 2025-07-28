@@ -1,5 +1,5 @@
 import { Center, MeshTransmissionMaterial, Text3D } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+// import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { Mesh } from "three";
 
@@ -8,11 +8,11 @@ export default function GlassText({ text }: { text: string }) {
 
   const textRef = useRef<Mesh>(null);
 
-  useFrame((state) => {
-    if (textRef.current) {
-      textRef.current.rotation.y = state.clock.getElapsedTime() * 0.8;
-    }
-  });
+  // useFrame((state) => {
+  //   if (textRef.current) {
+  //     textRef.current.rotation.y = state.clock.getElapsedTime() * 0.8;
+  //   }
+  // });
 
   return (
     <group ref={textRef}>
