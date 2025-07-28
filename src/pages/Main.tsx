@@ -34,7 +34,7 @@ const ThreeScene = ({ text, size = 512 }: { text: string; size: number }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
 
-  const displaySize = 512;
+  const displaySize = 1024;
 
   return (
     <div style={{ width: "512px", height: "512px" }}>
@@ -102,7 +102,7 @@ export default function HomePage() {
   const [text, setText] = useState("Glass");
   const [duration, setDuration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
-  const [size, setSize] = useState(512);
+  const [size, setSize] = useState(1024);
   const [progress, setProgress] = useState(0);
   const { startRecording } = useCanvasRecorder("maincanvas");
   const { downloadImage } = useCanvasImageDownloader("maincanvas");
@@ -140,7 +140,7 @@ export default function HomePage() {
     <div className="flex w-screen h-screen bg-white dark:bg-black">
       <Sidebar />
       <div className="flex flex-col flex-1 ">
-        <Navbar />
+        <Navbar onRecord={handleStartRecording} onCapture={handleCapture} />
         <main className="flex flex-col p-6 gap-2">
           <div className="flex w-full justify-center p-4">
             <ThreeScene text={text} size={size} />
@@ -158,13 +158,6 @@ export default function HomePage() {
             step={500}
           />
           {duration}
-          <Button onClick={handleStartRecording} disabled={isRecording}>
-            {isRecording ? "Recording..." : "Record"}
-          </Button>
-
-          <Button onClick={handleCapture} disabled={isRecording}>
-            Capture
-          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
