@@ -188,7 +188,7 @@ export const GlassScene = ({ text }: { text: string }) => {
         shadows
         orthographic
         className="rounded-lg border-1 border-gray-900"
-        camera={{ position: [-10, 10, 10], zoom: 75, near: 0.1, far: 300 }}
+        camera={{ position: [-10, 10, 10], zoom: 75, near: 0.1, far: 1000 }}
         gl={{ antialias: false }}
       >
         <color attach="background" args={["#141420"]} />
@@ -202,7 +202,7 @@ export const GlassScene = ({ text }: { text: string }) => {
           >
             {text}
           </GlassText>
-          <Shadows shadow={shadow} />
+          <Shadows key={text} shadow={shadow} />
           <Grid
             position={[0, -1, 0]}
             cellSize={2.25}
