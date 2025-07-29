@@ -1,123 +1,54 @@
-import React, { useState } from "react";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useCanvasRecorder } from "@/hooks/useCanvasRecorder";
-import { Slider } from "@/components/ui/slider";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Progress } from "@/components/ui/progress";
-import { Sidebar } from "@/features/sidebar";
-import { Navbar } from "@/features/navbar";
-import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { GlassScene } from "@/components/three/Glass";
-import { ThreeScene } from "@/components/three/Text";
+import { MountainIcon } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
-export default function HomePage() {
-  const [text, setText] = useState("Glass");
-  const [duration, setDuration] = useState(2000);
-  const [isRecording, setIsRecording] = useState(false);
-  const [size, setSize] = useState(1024);
-  const [progress, setProgress] = useState(0);
-  const { startRecording } = useCanvasRecorder("maincanvas");
-  const { downloadImage } = useCanvasImageDownloader("maincanvas");
-
-  const handleStartRecording = () => {
-    if (isRecording) return;
-
-    setIsRecording(true);
-    setProgress(0);
-    startRecording(duration);
-
-    const startTime = Date.now();
-    const interval = setInterval(() => {
-      const elapsedTime = Date.now() - startTime;
-      const currentProgress = (elapsedTime / duration) * 100;
-
-      if (currentProgress >= 100) {
-        setProgress(100);
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsRecording(false);
-          setProgress(0);
-        }, 500);
-      } else {
-        setProgress(currentProgress);
-      }
-    }, 50);
-  };
-
-  const handleCapture = () => {
-    downloadImage();
-  };
-
+export default function LandingPage() {
   return (
-    <div className="flex w-screen h-screen bg-white dark:bg-black">
-      <Sidebar />
-      <div className="flex flex-col flex-1 ">
-        <Navbar />
-        <main className="flex flex-col p-6 gap-2">
-          <div className="flex w-full justify-center p-4">
-            <ThreeScene text={text} size={size} />
-            <GlassScene text={text} />
-          </div>
-          <Input
-            type="text"
-            placeholder="Text"
-            onChange={(e) => setText(e.target.value)}
-          />
-          <Slider
-            value={[duration]}
-            onValueChange={(value) => setDuration(value[0])}
-            min={1000}
-            max={10000}
-            step={500}
-          />
-          {duration}
-
-          <Button onClick={handleStartRecording}>Record</Button>
-          <Button onClick={handleCapture}>Capture</Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>Set Size</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setSize(128)}>
-                128x128
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSize(512)}>
-                512x512
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSize(1024)}>
-                1024x1024
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {size}
-
-          <Dialog open={isRecording} onOpenChange={setIsRecording}>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Recoding</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <Progress value={progress} />
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="px-4 lg:px-6 h-14 flex items-center">
+        <Link to="/" className="flex items-center justify-center">
+          <MountainIcon className="h-6 w-6" />
+          <span className="sr-only">MyBrand</span>
+        </Link>
+        <nav className="ml-auto flex gap-4 sm:gap-6">
+          <Button asChild>
+            <Link to="/list">Get Started</Link>
+          </Button>
+        </nav>
+      </header>
+      <main className="flex-1">
+        <section className="w-full h-full flex items-center justify-center py-12 md:py-24 lg:py-32 xl:py-48">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-6 text-center">
+              <div className="space-y-4">
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+                  Explore 3D Typo Effects
+                </h1>
+                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                  Quickly bring all 3D typography effects to life on the web.
+                  Every effect is ready for you. Experience it now on the web.
+                </p>
               </div>
-            </DialogContent>
-          </Dialog>
-        </main>
-      </div>
+              <div className="space-x-4">
+                <Button size="lg" asChild>
+                  <Link to="/list">Get Started</Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() =>
+                    window.open("https://github.com/DipokalLab/glass")
+                  }
+                >
+                  <FaGithub />
+                  GitHub
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
