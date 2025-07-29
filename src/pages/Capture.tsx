@@ -71,7 +71,7 @@ export default function CapturePage() {
   return (
     <>
       <Navbar />
-      <div className="flex w-screen h-screen bg-white dark:bg-black">
+      <div className="flex w-screen h-screen bg-white dark:bg-black  pt-15">
         <Sidebar />
         <div className="flex flex-col flex-1 ">
           <main className="flex flex-col p-6 gap-2">

@@ -7,7 +7,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1  pt-15">
         <section className="w-full h-full flex items-center justify-center py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-6 text-center">
