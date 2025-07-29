@@ -29,6 +29,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { GlassScene } from "@/components/three/Glass";
 
 const ThreeScene = ({ text, size = 512 }: { text: string; size: number }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
@@ -144,6 +145,7 @@ export default function HomePage() {
         <main className="flex flex-col p-6 gap-2">
           <div className="flex w-full justify-center p-4">
             <ThreeScene text={text} size={size} />
+            <GlassScene text={text} />
           </div>
           <Input
             type="text"
