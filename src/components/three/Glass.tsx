@@ -187,9 +187,11 @@ export const GlassScene = ({ text }: { text: string }) => {
       <Canvas
         shadows
         orthographic
+        id="maincanvas"
+        gl={{ preserveDrawingBuffer: true, antialias: false }}
         className="rounded-lg border-1 border-gray-900"
+        style={{ width: "100%", height: "100%" }}
         camera={{ position: [-10, 10, 10], zoom: 75, near: 0.1, far: 1000 }}
-        gl={{ antialias: false }}
       >
         <color attach="background" args={["#141420"]} />
         <group position={[0, 1, 0]}>

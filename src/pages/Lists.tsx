@@ -1,8 +1,10 @@
 import { Navbar } from "@/features/navbar";
 import { Sidebar } from "@/features/sidebar";
+import { useNavigate } from "react-router";
 
 export default function ListsPage() {
-  const imageItems = Array.from({ length: 12 }, (_, index) => index + 1);
+  const navigate = useNavigate();
+  const textItems = ["glow", "glass"];
 
   return (
     <div className="flex w-screen h-screen bg-white dark:bg-black">
@@ -12,15 +14,16 @@ export default function ListsPage() {
 
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {imageItems.map((id) => (
+            {textItems.map((id) => (
               <div
                 key={id}
                 className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
               >
                 <img
-                  src={`https://picsum.photos/seed/${id}/500/500`}
+                  src={`/imglist/${id}.png`}
                   alt={`임의의 이미지 ${id}`}
-                  className="w-full h-full object-cover"
+                  onClick={() => navigate(`/capture/${id}`)}
+                  className="w-full h-full object-cover rounded-lg border-1 border-gray-900"
                 />
               </div>
             ))}

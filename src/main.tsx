@@ -6,6 +6,7 @@ import "./index.css";
 import { ThemeProvider } from "./components/theme-provider";
 import ListsPage from "./pages/Lists";
 import CreditPage from "./pages/Credit";
+import CapturePage from "./pages/Capture";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
           <Route index element={<HomePage />} />
           <Route path="list" element={<ListsPage />} />
           <Route path="credit" element={<CreditPage />} />
+          <Route path="capture/*" element={<CapturePage />} />
         </Routes>
       </ThemeProvider>
     </StrictMode>

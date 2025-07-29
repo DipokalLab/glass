@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { useCanvasRecorder } from "@/hooks/useCanvasRecorder";
 import { Slider } from "@/components/ui/slider";
@@ -19,10 +20,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { GlassScene } from "@/components/three/Glass";
 import { ThreeScene } from "@/components/three/Text";
+import { GlassScene } from "@/components/three/Glass";
 
-export default function HomePage() {
+export default function CapturePage() {
+  const [textId, setTextId] = useState("");
   const [text, setText] = useState("Glass");
   const [duration, setDuration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
@@ -30,6 +32,12 @@ export default function HomePage() {
   const [progress, setProgress] = useState(0);
   const { startRecording } = useCanvasRecorder("maincanvas");
   const { downloadImage } = useCanvasImageDownloader("maincanvas");
+
+  useEffect(() => {
+    const split = window.location.pathname.split("/");
+    const id = split[split.length - 1];
+    setTextId(id);
+  }, []);
 
   const handleStartRecording = () => {
     if (isRecording) return;
@@ -67,8 +75,8 @@ export default function HomePage() {
         <Navbar />
         <main className="flex flex-col p-6 gap-2">
           <div className="flex w-full justify-center p-4">
-            <ThreeScene text={text} size={size} />
-            <GlassScene text={text} />
+            {textId == "glow" && <ThreeScene text={text} size={size} />}
+            {textId == "glass" && <GlassScene text={text} />}
           </div>
           <Input
             type="text"
