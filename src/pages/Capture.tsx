@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
@@ -69,63 +69,65 @@ export default function CapturePage() {
   };
 
   return (
-    <div className="flex w-screen h-screen bg-white dark:bg-black">
-      <Sidebar />
-      <div className="flex flex-col flex-1 ">
-        <Navbar />
-        <main className="flex flex-col p-6 gap-2">
-          <div className="flex w-full justify-center p-4">
-            {textId == "glow" && <ThreeScene text={text} size={size} />}
-            {textId == "glass" && <GlassScene text={text} />}
-          </div>
-          <Input
-            type="text"
-            placeholder="Text"
-            onChange={(e) => setText(e.target.value)}
-          />
-          <Slider
-            value={[duration]}
-            onValueChange={(value) => setDuration(value[0])}
-            min={1000}
-            max={10000}
-            step={500}
-          />
-          {duration}
+    <>
+      <Navbar />
+      <div className="flex w-screen h-screen bg-white dark:bg-black">
+        <Sidebar />
+        <div className="flex flex-col flex-1 ">
+          <main className="flex flex-col p-6 gap-2">
+            <div className="flex w-full justify-center p-4">
+              {textId == "glow" && <ThreeScene text={text} size={size} />}
+              {textId == "glass" && <GlassScene text={text} />}
+            </div>
+            <Input
+              type="text"
+              placeholder="Text"
+              onChange={(e) => setText(e.target.value)}
+            />
+            <Slider
+              value={[duration]}
+              onValueChange={(value) => setDuration(value[0])}
+              min={1000}
+              max={10000}
+              step={500}
+            />
+            {duration}
 
-          <Button onClick={handleStartRecording}>Record</Button>
-          <Button onClick={handleCapture}>Capture</Button>
+            <Button onClick={handleStartRecording}>Record</Button>
+            <Button onClick={handleCapture}>Capture</Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>Set Size</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setSize(128)}>
-                128x128
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSize(512)}>
-                512x512
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSize(1024)}>
-                1024x1024
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>Set Size</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setSize(128)}>
+                  128x128
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSize(512)}>
+                  512x512
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSize(1024)}>
+                  1024x1024
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          {size}
+            {size}
 
-          <Dialog open={isRecording} onOpenChange={setIsRecording}>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Recoding</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <Progress value={progress} />
-              </div>
-            </DialogContent>
-          </Dialog>
-        </main>
+            <Dialog open={isRecording} onOpenChange={setIsRecording}>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Recoding</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <Progress value={progress} />
+                </div>
+              </DialogContent>
+            </Dialog>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
