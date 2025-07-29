@@ -1,4 +1,4 @@
-import { Home, Package, Menu, CircleQuestionMark } from "lucide-react";
+import { Package, Menu, CircleQuestionMark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
@@ -7,7 +7,6 @@ export const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: "Home", icon: Home, path: "/" },
     { name: "Lists", icon: Package, path: "/list" },
     { name: "Credit", icon: CircleQuestionMark, path: "/credit" },
   ];
