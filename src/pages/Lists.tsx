@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 export default function ListsPage() {
   const navigate = useNavigate();
-  const textItems = ["glow", "glass"];
+  const textItems = ["glow", "glass", "distort"];
 
   return (
     <>
