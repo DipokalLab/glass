@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import { FaGithub } from "react-icons/fa";
 import { Navbar } from "@/features/navbar";
 
 export default function LandingPage() {
@@ -31,7 +30,6 @@ export default function LandingPage() {
                     window.open("https://github.com/DipokalLab/glass")
                   }
                 >
-                  <FaGithub />
                   GitHub
                 </Button>
               </div>
