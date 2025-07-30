@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Navbar } from "@/features/navbar";
 import { Sidebar } from "@/features/sidebar";
 import { useNavigate } from "react-router";
@@ -23,10 +24,13 @@ export default function ListsPage() {
                     src={`/imglist/${id}.png`}
                     alt={`임의의 이미지 ${id}`}
                     onClick={() => navigate(`/capture/${id}`)}
-                    className="w-full h-full object-cover rounded-lg hover:border-3 border-1 duration-200 border-gray-900"
+                    className="w-full h-full object-cover rounded-lg hover:border-3 border-1 duration-200 border-neutral-800"
                   />
                 </div>
               ))}
+            </div>
+            <div className="flex w-full justify-center pt-4">
+              <Button variant="outline">Visit GitHub</Button>
             </div>
           </div>
         </div>

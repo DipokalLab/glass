@@ -18,7 +18,7 @@ export const Sidebar = () => {
           <a
             key={item.name}
             onClick={() => navigate(item.path)}
-            className="flex items-center px-3 hover:px-4 py-2 mt-2 text-sm font-medium rounded-md hover:bg-gray-200 dark:hover:bg-slate-900 duration-150 cursor-pointer"
+            className="flex items-center px-3 hover:px-4 py-2 mt-2 text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-slate-900 duration-150 cursor-pointer"
           >
             <item.icon className="w-5 h-5 mr-3" />
             {item.name}
@@ -30,7 +30,7 @@ export const Sidebar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-64 bg-white border-r border-gray-200 dark:bg-black dark:border-gray-800 shrink-0">
+      <div className="hidden lg:block w-64 bg-white border-r border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
         {sidebarContent}
       </div>
       <div className="lg:hidden">
@@ -39,7 +39,7 @@ export const Sidebar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="fixed top-4 left-4 z-50 text-gray-800 dark:text-white"
+              className="fixed top-4 left-4 z-50 text-neutral-800 dark:text-white"
             >
               <Menu className="w-6 h-6" />
             </Button>

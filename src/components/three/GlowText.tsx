@@ -38,7 +38,7 @@ export const GlowScene = ({
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
         camera={{ position: [0, 0, 7] }}
-        className="rounded-lg border-1 border-gray-900"
+        className="rounded-lg border-1 border-neutral-900"
         dpr={size / displaySize}
         style={{ width: "100%", height: "100%" }}
       >

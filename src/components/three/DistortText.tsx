@@ -28,7 +28,7 @@ export const DistortScene = ({ text }: { text: string }) => {
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
         camera={{ position: [0, 0, 7] }}
-        className="rounded-lg border-1 border-gray-900"
+        className="rounded-lg border-1 border-neutral-900"
         style={{ width: "100%", height: "100%" }}
       >
         <color attach="background" args={["#000000"]} />
