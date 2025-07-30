@@ -10,7 +10,18 @@ export default function CreditPage() {
 
         <div className="flex flex-col flex-1 ">
           <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-            <h1>Glass</h1>
+            <h1 className="font-bold text-2xl">
+              Glass - A collection of 3D typo effects
+            </h1>
+            <br />
+            <a
+              href="https://github.com/DipokalLab/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-1"
+            >
+              H. Jun Huh (Maker)
+            </a>
           </div>
         </div>
       </div>

@@ -2,6 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/features/navbar";
 import { Sidebar } from "@/features/sidebar";
 import { useNavigate } from "react-router";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { FaGithub } from "react-icons/fa";
 
 export default function ListsPage() {
   const navigate = useNavigate();
@@ -30,7 +39,34 @@ export default function ListsPage() {
               ))}
             </div>
             <div className="flex w-full justify-center pt-4">
-              <Button variant="outline">Visit GitHub</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Explore More?</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Explore More</DialogTitle>
+                    <DialogDescription>
+                      We are working on all projects as open source.
+                      <br /> While some complex features will be monetized under
+                      an open-core model, most effects and models are completely
+                      free. If you want to access more content quickly, please
+                      visit our GitHub below. By giving us a star, you can
+                      support this project and receive faster update
+                      notifications.
+                    </DialogDescription>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() =>
+                        window.open("https://github.com/DipokalLab/glass")
+                      }
+                    >
+                      <FaGithub /> GitHub
+                    </Button>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
