@@ -20,7 +20,7 @@ import {
   type Mesh,
 } from "three";
 
-export const ThreeScene = ({
+export const GlowScene = ({
   text,
   size = 512,
 }: {
@@ -78,7 +78,7 @@ export const ThreeScene = ({
             map={texture}
           />
         </Environment>
-        <GlassText text={text} />
+        <GlowText text={text} />
         <EffectComposer>
           <Bloom
             intensity={1.5}
@@ -94,7 +94,7 @@ export const ThreeScene = ({
   );
 };
 
-export function GlassText({ text }: { text: string }) {
+export function GlowText({ text }: { text: string }) {
   const fontUrl = "/font/Pretendard_Bold.json";
 
   const textRef = useRef<Mesh>(null);

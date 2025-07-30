@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   Grid,
   Center,
@@ -16,8 +16,6 @@ import {
   TiltShift2,
 } from "@react-three/postprocessing";
 import { memo, type JSX } from "react";
-import { RGBELoader } from "three-stdlib";
-import { easing } from "maath";
 
 type MaterialConfig = {
   backside: boolean;
@@ -46,16 +44,9 @@ interface GlassTextProps
   children: React.ReactNode;
 }
 
-function GlassText({
-  height = 0.3,
-  text,
-  config,
-  children,
-  ...props
-}: GlassTextProps) {
+function GlassText({ height = 0.3, text, ...props }: GlassTextProps) {
   const fontUrl = "/font/Pretendard_Bold.json";
   const fontThinUrl = "/font/Pretendard_Thin.json";
-  const texture = useLoader(RGBELoader, "/image/fireplace_1k.hdr");
 
   return (
     <>
@@ -117,24 +108,6 @@ function GlassText({
       </group>
     </>
   );
-}
-
-function Rig() {
-  useFrame((state, delta) => {
-    easing.damp3(
-      state.camera.position,
-      [
-        -12.5 + state.pointer.x,
-        12.5 + state.pointer.y,
-        15 + Math.atan(state.pointer.x * 2),
-      ],
-      0.5,
-      delta
-    );
-    state.camera.lookAt(2, -1, 0);
-  });
-
-  return null;
 }
 
 const Shadows = memo(({ shadow }: { shadow: string }) => (
@@ -209,7 +182,7 @@ export const GlassScene = ({ text }: { text: string }) => {
             position={[0, -1, 0]}
             cellSize={2.25}
             cellThickness={1}
-            cellColor="#3a3a3a"
+            cellColor="#252526"
             sectionSize={5.5}
             sectionThickness={1.5}
             sectionColor={stripes}

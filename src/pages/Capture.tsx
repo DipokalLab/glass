@@ -20,8 +20,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ThreeScene } from "@/components/three/Text";
-import { GlassScene } from "@/components/three/Glass";
+import { GlassScene } from "@/components/three/GlassText";
+import { GlowScene } from "@/components/three/GlowText";
 import { DistortScene } from "@/components/three/DistortText";
 
 export default function CapturePage() {
@@ -77,7 +77,7 @@ export default function CapturePage() {
         <div className="flex flex-col flex-1 ">
           <main className="flex flex-col p-6 gap-2">
             <div className="flex w-full justify-center p-4">
-              {textId == "glow" && <ThreeScene text={text} size={size} />}
+              {textId == "glow" && <GlowScene text={text} size={size} />}
               {textId == "glass" && <GlassScene text={text} />}
               {textId == "distort" && <DistortScene text={text} />}
             </div>
