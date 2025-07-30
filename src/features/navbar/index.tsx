@@ -1,15 +1,14 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { MountainIcon } from "lucide-react";
+import { MountainIcon, TypeOutline } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router";
-
 export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
   return (
     <header className="flex fixed w-full items-center justify-end h-16 px-6 gap-2 bg-white border-b border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
       {isShowLogo ? (
         <Link to="/" className="flex items-center justify-center">
-          <MountainIcon className="h-6 w-6" />
+          <TypeOutline className="h-6 w-6" />
           <span className="sr-only">MyBrand</span>
         </Link>
       ) : (
@@ -17,7 +16,7 @@ export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
           to="/"
           className="flex items-center justify-center hidden lg:block"
         >
-          <MountainIcon className="h-6 w-6" />
+          <TypeOutline className="h-6 w-6" />
           <span className="sr-only">MyBrand</span>
         </Link>
       )}
