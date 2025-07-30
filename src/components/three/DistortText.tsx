@@ -18,7 +18,19 @@ import {
   type Mesh,
 } from "three";
 
-export const DistortScene = ({ text }: { text: string }) => {
+export type DistortOptions = {
+  bloomIntensity: number;
+  chromaticAberration: number;
+  distortSpeed: number;
+};
+
+export const DistortScene = ({
+  text,
+  options,
+}: {
+  text: string;
+  options: DistortOptions;
+}) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
 
@@ -38,16 +50,18 @@ export const DistortScene = ({ text }: { text: string }) => {
           intensity={30}
           color={"#ffffff"}
         />
-        <DistortText text={text} />
+        <DistortText text={text} distortSpeed={options.distortSpeed} />
 
         <EffectComposer>
           <Bloom
-            intensity={1.5}
+            intensity={options.bloomIntensity}
             luminanceThreshold={0.5}
             luminanceSmoothing={0.025}
             mipmapBlur
           />
-          <ChromaticAberration offset={[0.001, 0.001]} />
+          <ChromaticAberration
+            offset={[options.chromaticAberration, options.chromaticAberration]}
+          />
         </EffectComposer>
         <OrbitControls enablePan={false} />
       </Canvas>
@@ -55,7 +69,13 @@ export const DistortScene = ({ text }: { text: string }) => {
   );
 };
 
-export function DistortText({ text }: { text: string }) {
+export function DistortText({
+  text,
+  distortSpeed = 5,
+}: {
+  text: string;
+  distortSpeed: number;
+}) {
   const fontUrl = "/font/Pretendard_Bold.json";
 
   const textRef = useRef<Mesh>(null);
@@ -74,7 +94,7 @@ export function DistortText({ text }: { text: string }) {
           bevelSize={0}
         >
           {text}
-          <MeshDistortMaterial ref={ref} speed={5}>
+          <MeshDistortMaterial ref={ref} speed={distortSpeed}>
             <GradientTexture
               stops={[0, 0.8, 1]}
               colors={["#e63946", "#f1faee", "#a8dadc"]}

@@ -15,7 +15,10 @@ import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
 import { GlassScene } from "@/components/three/GlassText";
 import { GlowScene, type GlowOptions } from "@/components/three/GlowText";
-import { DistortScene } from "@/components/three/DistortText";
+import {
+  DistortScene,
+  type DistortOptions,
+} from "@/components/three/DistortText";
 import { Download, SlidersHorizontal } from "lucide-react";
 import {
   Sheet,
@@ -50,6 +53,14 @@ export default function CapturePage() {
       setOptions({
         bloomIntensity: 1.5,
         chromaticAberration: 0.001,
+      });
+    }
+
+    if (id == "distort") {
+      setOptions({
+        bloomIntensity: 1.5,
+        chromaticAberration: 0.001,
+        distortSpeed: 5,
       });
     }
   };
@@ -156,7 +167,9 @@ export default function CapturePage() {
                 />
               )}
               {textId == "glass" && <GlassScene text={text} />}
-              {textId == "distort" && <DistortScene text={text} />}
+              {textId == "distort" && (
+                <DistortScene text={text} options={options as DistortOptions} />
+              )}
             </div>
 
             <div className="flex w-full justify-center">
