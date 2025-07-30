@@ -125,3 +125,11 @@ body,
   height: 100%;
   background-color: #000;
 }
+
+body {
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
