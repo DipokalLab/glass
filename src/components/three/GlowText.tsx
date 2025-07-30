@@ -20,12 +20,19 @@ import {
   type Mesh,
 } from "three";
 
+export type GlowOptions = {
+  bloomIntensity: number;
+  chromaticAberration: number;
+};
+
 export const GlowScene = ({
   text,
   size = 512,
+  options,
 }: {
   text: string;
   size: number;
+  options: GlowOptions;
 }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
@@ -81,12 +88,14 @@ export const GlowScene = ({
         <GlowText text={text} />
         <EffectComposer>
           <Bloom
-            intensity={1.5}
+            intensity={options.bloomIntensity}
             luminanceThreshold={0.5}
             luminanceSmoothing={0.025}
             mipmapBlur
           />
-          <ChromaticAberration offset={[0.001, 0.001]} />
+          <ChromaticAberration
+            offset={[options.chromaticAberration, options.chromaticAberration]}
+          />
         </EffectComposer>
         <OrbitControls enablePan={false} />
       </Canvas>

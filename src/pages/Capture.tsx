@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { useCanvasRecorder } from "@/hooks/useCanvasRecorder";
-import { Slider } from "@/components/ui/slider";
 import {
   Dialog,
   DialogContent,
@@ -14,16 +13,19 @@ import { Progress } from "@/components/ui/progress";
 import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { GlassScene } from "@/components/three/GlassText";
-import { GlowScene } from "@/components/three/GlowText";
+import { GlowScene, type GlowOptions } from "@/components/three/GlowText";
 import { DistortScene } from "@/components/three/DistortText";
-import { Download } from "lucide-react";
+import { Download, SlidersHorizontal } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 export default function CapturePage() {
   const [textId, setTextId] = useState("");
@@ -32,14 +34,25 @@ export default function CapturePage() {
   const [isRecording, setIsRecording] = useState(false);
   const [size, setSize] = useState(1024);
   const [progress, setProgress] = useState(0);
+  const [options, setOptions] = useState({});
   const { startRecording } = useCanvasRecorder("maincanvas");
   const { downloadImage } = useCanvasImageDownloader("maincanvas");
 
   useEffect(() => {
     const split = window.location.pathname.split("/");
     const id = split[split.length - 1];
+    setOptionsMatch(id);
     setTextId(id);
   }, []);
+
+  const setOptionsMatch = (id: string) => {
+    if (id == "glow") {
+      setOptions({
+        bloomIntensity: 1.5,
+        chromaticAberration: 0.001,
+      });
+    }
+  };
 
   const handleStartRecording = () => {
     if (isRecording) return;
@@ -70,6 +83,63 @@ export default function CapturePage() {
     downloadImage();
   };
 
+  const handleOptionChange = (
+    key: string,
+    value: string | number | boolean
+  ) => {
+    setOptions((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const renderInput = (key: string, value: string | number | boolean) => {
+    const valueType = typeof value;
+
+    switch (valueType) {
+      case "number":
+        return (
+          <Input
+            type="number"
+            id={key}
+            value={value as number}
+            onChange={(e) =>
+              handleOptionChange(key, parseFloat(e.target.value) || 0)
+            }
+            className="col-span-2 h-8"
+          />
+        );
+      case "string":
+        return (
+          <Input
+            type="text"
+            id={key}
+            value={value as string}
+            onChange={(e) => handleOptionChange(key, e.target.value)}
+            className="col-span-2 h-8"
+          />
+        );
+      case "boolean":
+        return (
+          <div className="col-span-2 flex items-center h-8">
+            <Switch
+              id={key}
+              checked={value as boolean}
+              onCheckedChange={(checked: boolean) =>
+                handleOptionChange(key, checked)
+              }
+            />
+          </div>
+        );
+      default:
+        return (
+          <p className="col-span-2 text-sm text-muted-foreground">
+            Unsupported type: {valueType}
+          </p>
+        );
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -78,13 +148,48 @@ export default function CapturePage() {
         <div className="flex flex-col flex-1 ">
           <main className="flex flex-col p-6 justify-center gap-2">
             <div className="flex w-full justify-center p-4">
-              {textId == "glow" && <GlowScene text={text} size={size} />}
+              {textId == "glow" && (
+                <GlowScene
+                  text={text}
+                  size={size}
+                  options={options as GlowOptions}
+                />
+              )}
               {textId == "glass" && <GlassScene text={text} />}
               {textId == "distort" && <DistortScene text={text} />}
             </div>
 
             <div className="flex w-full justify-center">
               <div className="flex items-center justify-center gap-2 w-[512px]">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <SlidersHorizontal />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Options</SheetTitle>
+
+                      <div className="grid gap-4">
+                        {Object.entries(options).map(([key, value]) => (
+                          <div
+                            key={key}
+                            className="grid grid-cols-3 items-center gap-4"
+                          >
+                            <Label htmlFor={key} className="capitalize">
+                              {key.replace(/([A-Z])/g, " $1")}
+                            </Label>
+                            {renderInput(
+                              key,
+                              value as string | number | boolean
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </SheetHeader>
+                  </SheetContent>
+                </Sheet>
                 <Input
                   type="text"
                   placeholder="Text"
