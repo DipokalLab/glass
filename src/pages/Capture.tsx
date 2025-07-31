@@ -33,9 +33,9 @@ import { Switch } from "@/components/ui/switch";
 export default function CapturePage() {
   const [textId, setTextId] = useState("");
   const [text, setText] = useState("Glass");
-  const [duration, setDuration] = useState(2000);
+  const [duration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
-  const [size, setSize] = useState(1024);
+  const [size] = useState(1024);
   const [progress, setProgress] = useState(0);
   const [options, setOptions] = useState({});
   const { startRecording } = useCanvasRecorder("maincanvas");
@@ -213,6 +213,10 @@ export default function CapturePage() {
                 </Button>
               </div>
             </div>
+
+            <Button onClick={handleStartRecording} className="hidden">
+              <Download /> Image
+            </Button>
 
             {/* <Slider
               value={[duration]}

@@ -1,6 +1,6 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { MountainIcon, TypeOutline } from "lucide-react";
+import { TypeOutline } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router";
 export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
@@ -12,10 +12,7 @@ export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
           <span className="sr-only">MyBrand</span>
         </Link>
       ) : (
-        <Link
-          to="/"
-          className="flex items-center justify-center hidden lg:block"
-        >
+        <Link to="/" className="items-center justify-center hidden lg:block">
           <TypeOutline className="h-6 w-6" />
           <span className="sr-only">MyBrand</span>
         </Link>
