@@ -156,7 +156,7 @@ export const GlassScene = ({ text }: { text: string }) => {
 
   const { stripes, environment, shadow, ...materialConfig } = controls;
   return (
-    <div style={{ width: "512px", height: "512px" }}>
+    <div className="w-full max-w-[512px] aspect-square">
       <Canvas
         shadows
         orthographic

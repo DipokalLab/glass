@@ -35,7 +35,7 @@ export const DistortScene = ({
   texture.mapping = EquirectangularReflectionMapping;
 
   return (
-    <div style={{ width: "512px", height: "512px" }}>
+    <div className="w-full max-w-[512px] aspect-square">
       <Canvas
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}

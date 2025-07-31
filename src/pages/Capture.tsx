@@ -156,8 +156,8 @@ export default function CapturePage() {
       <Navbar />
       <div className="flex w-screen h-screen bg-white dark:bg-black  pt-15">
         <Sidebar />
-        <div className="flex flex-col flex-1 ">
-          <main className="flex flex-col p-6 justify-center gap-2">
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <main className="flex flex-col p-6 justify-center items-center gap-2">
             <div className="flex w-full justify-center p-4">
               {textId == "glow" && (
                 <GlowScene
