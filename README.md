@@ -13,6 +13,8 @@
 
 A collection of 3D typography ready for immediate use on the web. Easily output as images. Built with Three.js.
 
+Customize 3D typography to your liking and export it as an image. Enter your own custom text to download the generated image.
+
 ## Roadmap
 
 - [x] Create Image

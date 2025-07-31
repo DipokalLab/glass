@@ -1,15 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import { fileURLToPath, URL } from "url";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(async () => {
-  const { default: mdx } = await import("@mdx-js/rollup");
   return {
-    plugins: [mdx(), react(), tailwindcss()],
+    plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
   };
