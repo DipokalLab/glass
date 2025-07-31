@@ -14,7 +14,23 @@ import { FaGithub } from "react-icons/fa";
 
 export default function ListsPage() {
   const navigate = useNavigate();
-  const textItems = ["glow", "glass", "distort"];
+  const items = [
+    {
+      id: "glow",
+      title: "Glow Effect",
+      description: "A subtle and radiant glow effect.",
+    },
+    {
+      id: "glass",
+      title: "Glassmorphism",
+      description: "An effect that mimics a frosted glass texture.",
+    },
+    {
+      id: "distort",
+      title: "Distortion Effect",
+      description: "An effect that warps and distorts the image.",
+    },
+  ];
 
   return (
     <>
@@ -23,18 +39,28 @@ export default function ListsPage() {
         <Sidebar />
         <div className="flex flex-col flex-1 ">
           <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-              {textItems.map((id) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+              {items.map((item) => (
                 <div
-                  key={id}
-                  className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  key={item.id}
+                  onClick={() => navigate(`/capture/${item.id}`)}
+                  className="group cursor-pointer overflow-hidden  shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
                 >
-                  <img
-                    src={`/imglist/${id}.png`}
-                    alt={`임의의 이미지 ${id}`}
-                    onClick={() => navigate(`/capture/${id}`)}
-                    className="w-full h-full object-cover rounded-lg hover:border-3 border-1 duration-200 border-neutral-800"
-                  />
+                  <div className="overflow-hidden rounded-lg">
+                    <img
+                      src={`/imglist/${item.id}.png`}
+                      alt={item.title}
+                      className="w-full h-full object-cover aspect-square rounded-lg transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="pt-4 ">
+                    <h3 className="text-lg font-semibold text-black dark:text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
