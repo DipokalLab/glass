@@ -1,3 +1,4 @@
+import { useResolutionStore } from "@/features/canvas/store";
 import {
   Center,
   GradientTexture,
@@ -33,15 +34,23 @@ export const DistortScene = ({
 }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
+  const { width, height } = useResolutionStore();
 
   return (
-    <div className="w-full max-w-[512px] aspect-square">
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease, height 0.3s ease",
+      }}
+    >
       <Canvas
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
         camera={{ position: [0, 0, 7] }}
         className="rounded-lg border-1 border-neutral-900"
-        style={{ width: "100%", height: "100%" }}
       >
         <color attach="background" args={["#000000"]} />
         <ambientLight intensity={0.5} color={"#ffffff"} />

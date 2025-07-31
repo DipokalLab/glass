@@ -16,6 +16,7 @@ import {
   TiltShift2,
 } from "@react-three/postprocessing";
 import { memo, type JSX } from "react";
+import { useResolutionStore } from "@/features/canvas/store";
 
 type MaterialConfig = {
   backside: boolean;
@@ -153,17 +154,26 @@ export const GlassScene = ({ text }: { text: string }) => {
     stripes: "#444",
     shadow: "black",
   };
+  const { width, height } = useResolutionStore();
 
   const { stripes, environment, shadow, ...materialConfig } = controls;
+
   return (
-    <div className="w-full max-w-[512px] aspect-square">
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease, height 0.3s ease",
+      }}
+    >
       <Canvas
         shadows
         orthographic
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true, antialias: false }}
         className="rounded-lg border-1 border-neutral-900"
-        style={{ width: "100%", height: "100%" }}
         camera={{ position: [-10, 10, 10], zoom: 75, near: 0.1, far: 1000 }}
       >
         <color attach="background" args={["#141420"]} />

@@ -29,6 +29,14 @@ import {
 } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { calculateAspectRatio } from "@/lib/utils";
+import { useResolutionStore } from "@/features/canvas/store";
 
 export default function CapturePage() {
   const [textId, setTextId] = useState("");
@@ -36,6 +44,7 @@ export default function CapturePage() {
   const [duration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
   const [size] = useState(1024);
+  const { width, height, setResolution } = useResolutionStore();
   const [progress, setProgress] = useState(0);
   const [options, setOptions] = useState({});
   const { startRecording } = useCanvasRecorder("maincanvas");
@@ -88,6 +97,10 @@ export default function CapturePage() {
         setProgress(currentProgress);
       }
     }, 50);
+  };
+
+  const handleSetResolution = (w: number, h: number) => {
+    setResolution(w, h);
   };
 
   const handleCapture = () => {
@@ -217,6 +230,35 @@ export default function CapturePage() {
             <Button onClick={handleStartRecording} className="hidden">
               <Download /> Image
             </Button>
+
+            <div className="flex w-full justify-center">
+              <div className="flex items-center justify-start gap-2 w-[512px]">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Set Ratio {calculateAspectRatio(width, height)}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => handleSetResolution(512, 512)}
+                    >
+                      1:1
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleSetResolution(512, 384)}
+                    >
+                      4:3
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleSetResolution(1280, 720)}
+                    >
+                      16:9
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
 
             {/* <Slider
               value={[duration]}
