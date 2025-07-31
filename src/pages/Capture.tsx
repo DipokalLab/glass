@@ -236,7 +236,7 @@ export default function CapturePage() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm">
-                      Set Ratio {calculateAspectRatio(width, height)}
+                      Ratio {calculateAspectRatio(width, height)}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
@@ -246,7 +246,7 @@ export default function CapturePage() {
                       1:1
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleSetResolution(512, 384)}
+                      onClick={() => handleSetResolution(800, 600)}
                     >
                       4:3
                     </DropdownMenuItem>

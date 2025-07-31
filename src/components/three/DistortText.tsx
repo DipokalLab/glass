@@ -41,9 +41,9 @@ export const DistortScene = ({
       className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
       style={{
         width: `${width}px`,
-        height: `${height}px`,
+        aspectRatio: `${width} / ${height}`,
         maxWidth: "100%",
-        transition: "width 0.3s ease, height 0.3s ease",
+        transition: "width 0.3s ease",
       }}
     >
       <Canvas
