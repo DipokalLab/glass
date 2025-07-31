@@ -11,6 +11,8 @@
 
 ## About
 
+A collection of 3D typography ready for immediate use on the web. Easily output as images. Built with Three.js.
+
 ## Roadmap
 
 - [x] Create Image
@@ -18,6 +20,7 @@
 - [ ] Create Video
 - [ ] Add Animation Effects
 - [ ] Intro Preset
+- [ ] Add More Text
 
 ## Contributors
 
