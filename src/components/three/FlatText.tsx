@@ -65,7 +65,7 @@ export const FlatScene = ({ text }: { text: string }) => {
         className="rounded-lg border-1 border-neutral-900"
         camera={{ position: [0, 50, 0], fov: 45 }}
       >
-        <color attach="background" args={["#f2f2f5"]} />
+        <color attach="background" args={["#d7d7de"]} />
         <ambientLight intensity={2} color={"#c1c1c9"} />
         <directionalLight
           castShadow
