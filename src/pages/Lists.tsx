@@ -33,7 +33,7 @@ export default function ListsPage() {
     {
       id: "flat",
       title: "Flat",
-      description: "An effect that warps and distorts the image.",
+      description: "Flat 3d text image.",
     },
   ];
 
@@ -49,7 +49,7 @@ export default function ListsPage() {
                 <div
                   key={item.id}
                   onClick={() => navigate(`/capture/${item.id}`)}
-                  className="group cursor-pointer overflow-hidden  shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
+                  className="group cursor-pointer overflow-hidden rounded-lg pb-2 transition-shadow duration-300 flex flex-col"
                 >
                   <div className="overflow-hidden rounded-lg">
                     <img
