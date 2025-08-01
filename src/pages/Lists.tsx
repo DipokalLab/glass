@@ -30,6 +30,11 @@ export default function ListsPage() {
       title: "Distortion Effect",
       description: "An effect that warps and distorts the image.",
     },
+    {
+      id: "flat",
+      title: "Flat",
+      description: "An effect that warps and distorts the image.",
+    },
   ];
 
   return (

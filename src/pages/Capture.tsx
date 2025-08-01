@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { calculateAspectRatio } from "@/lib/utils";
 import { useResolutionStore } from "@/features/canvas/store";
+import { FlatScene } from "@/components/three/FlatText";
 
 export default function CapturePage() {
   const [textId, setTextId] = useState("");
@@ -183,6 +184,7 @@ export default function CapturePage() {
               {textId == "distort" && (
                 <DistortScene text={text} options={options as DistortOptions} />
               )}
+              {textId == "flat" && <FlatScene text={text} />}
             </div>
 
             <div className="flex w-full justify-center">
