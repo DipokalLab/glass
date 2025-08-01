@@ -30,7 +30,8 @@ export const Sidebar = () => {
 
   return (
     <>
-      <div className="hidden lg:block w-64 bg-white border-r border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
+      <div className="hidden  lg:block w-64 shrink-0"></div>
+      <div className="hidden fixed h-full lg:block w-64 bg-white border-r border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
         {sidebarContent}
       </div>
       <div className="lg:hidden">
