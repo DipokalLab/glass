@@ -30,10 +30,12 @@ export const GlowScene = ({
   text,
   size = 512,
   options,
+  isRender = false,
 }: {
   text: string;
   size: number;
   options: GlowOptions;
+  isRender?: boolean;
 }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
@@ -41,16 +43,8 @@ export const GlowScene = ({
   const displaySize = 1024;
   const { width, height } = useResolutionStore();
 
-  return (
-    <div
-      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
-      style={{
-        width: `${width}px`,
-        aspectRatio: `${width} / ${height}`,
-        maxWidth: "100%",
-        transition: "width 0.3s ease",
-      }}
-    >
+  const render = () => {
+    return (
       <Canvas
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
@@ -108,6 +102,24 @@ export const GlowScene = ({
         </EffectComposer>
         <OrbitControls enablePan={false} />
       </Canvas>
+    );
+  };
+
+  if (isRender) {
+    return <>{render()}</>;
+  }
+
+  return (
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        aspectRatio: `${width} / ${height}`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease",
+      }}
+    >
+      {render()}
     </div>
   );
 };

@@ -132,7 +132,13 @@ const Shadows = memo(({ shadow }: { shadow: string }) => (
   </AccumulativeShadows>
 ));
 
-export const GlassScene = ({ text }: { text: string }) => {
+export const GlassScene = ({
+  text,
+  isRender = false,
+}: {
+  text: string;
+  isRender?: boolean;
+}) => {
   const controls = {
     saturation: -1,
     environment: true,
@@ -158,16 +164,8 @@ export const GlassScene = ({ text }: { text: string }) => {
 
   const { stripes, environment, shadow, ...materialConfig } = controls;
 
-  return (
-    <div
-      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
-      style={{
-        width: `${width}px`,
-        aspectRatio: `${width} / ${height}`,
-        maxWidth: "100%",
-        transition: "width 0.3s ease",
-      }}
-    >
+  const render = () => {
+    return (
       <Canvas
         shadows
         orthographic
@@ -229,6 +227,24 @@ export const GlassScene = ({ text }: { text: string }) => {
         </EffectComposer>
         <OrbitControls enablePan={false} />
       </Canvas>
+    );
+  };
+
+  if (isRender) {
+    return <>{render()}</>;
+  }
+
+  return (
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        aspectRatio: `${width} / ${height}`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease",
+      }}
+    >
+      {render()}
     </div>
   );
 };

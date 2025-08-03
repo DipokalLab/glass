@@ -22,9 +22,14 @@ export function Render({
   return (
     <>
       {textId == "glow" && (
-        <GlowScene text={text} size={size} options={options as GlowOptions} />
+        <GlowScene
+          text={text}
+          size={size}
+          options={options as GlowOptions}
+          isRender={isRender}
+        />
       )}
-      {textId == "glass" && <GlassScene text={text} />}
+      {textId == "glass" && <GlassScene text={text} isRender={isRender} />}
       {textId == "distort" && (
         <DistortScene
           text={text}
