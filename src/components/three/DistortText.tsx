@@ -28,24 +28,18 @@ export type DistortOptions = {
 export const DistortScene = ({
   text,
   options,
+  isRender = false,
 }: {
   text: string;
   options: DistortOptions;
+  isRender?: boolean;
 }) => {
   const texture = useLoader(TextureLoader, "/image/texture.png");
   texture.mapping = EquirectangularReflectionMapping;
   const { width, height } = useResolutionStore();
 
-  return (
-    <div
-      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
-      style={{
-        width: `${width}px`,
-        aspectRatio: `${width} / ${height}`,
-        maxWidth: "100%",
-        transition: "width 0.3s ease",
-      }}
-    >
+  const render = () => {
+    return (
       <Canvas
         id="maincanvas"
         gl={{ preserveDrawingBuffer: true }}
@@ -74,6 +68,24 @@ export const DistortScene = ({
         </EffectComposer>
         <OrbitControls enablePan={false} />
       </Canvas>
+    );
+  };
+
+  if (isRender) {
+    return <>{render()}</>;
+  }
+
+  return (
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        aspectRatio: `${width} / ${height}`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease",
+      }}
+    >
+      {render()}
     </div>
   );
 };

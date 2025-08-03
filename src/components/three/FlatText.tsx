@@ -45,19 +45,17 @@ function FlatText({ height = 0.3, text }: FlatTextProps) {
   );
 }
 
-export const FlatScene = ({ text }: { text: string }) => {
+export const FlatScene = ({
+  text,
+  isRender = false,
+}: {
+  text: string;
+  isRender?: boolean;
+}) => {
   const { width, height } = useResolutionStore();
 
-  return (
-    <div
-      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
-      style={{
-        width: `${width}px`,
-        aspectRatio: `${width} / ${height}`,
-        maxWidth: "100%",
-        transition: "width 0.3s ease",
-      }}
-    >
+  const render = () => {
+    return (
       <Canvas
         shadows
         id="maincanvas"
@@ -120,6 +118,24 @@ export const FlatScene = ({ text }: { text: string }) => {
 
         <OrbitControls enablePan={false} />
       </Canvas>
+    );
+  };
+
+  if (isRender) {
+    return <>{render()}</>;
+  }
+
+  return (
+    <div
+      className="bg-gray-900 rounded-lg shadow-inner overflow-hidden"
+      style={{
+        width: `${width}px`,
+        aspectRatio: `${width} / ${height}`,
+        maxWidth: "100%",
+        transition: "width 0.3s ease",
+      }}
+    >
+      {render()}
     </div>
   );
 };

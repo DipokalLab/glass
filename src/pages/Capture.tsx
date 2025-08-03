@@ -13,12 +13,6 @@ import { Progress } from "@/components/ui/progress";
 import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
-import { GlassScene } from "@/components/three/GlassText";
-import { GlowScene, type GlowOptions } from "@/components/three/GlowText";
-import {
-  DistortScene,
-  type DistortOptions,
-} from "@/components/three/DistortText";
 import { Download, SlidersHorizontal } from "lucide-react";
 import {
   Sheet,
@@ -37,7 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { calculateAspectRatio } from "@/lib/utils";
 import { useResolutionStore } from "@/features/canvas/store";
-import { FlatScene } from "@/components/three/FlatText";
+import { Render } from "@/features/render";
 
 export default function CapturePage() {
   const [textId, setTextId] = useState("");
@@ -173,18 +167,13 @@ export default function CapturePage() {
         <div className="flex flex-col flex-1 overflow-hidden">
           <main className="flex flex-col p-6 justify-center items-center gap-2">
             <div className="flex w-full justify-center p-4">
-              {textId == "glow" && (
-                <GlowScene
-                  text={text}
-                  size={size}
-                  options={options as GlowOptions}
-                />
-              )}
-              {textId == "glass" && <GlassScene text={text} />}
-              {textId == "distort" && (
-                <DistortScene text={text} options={options as DistortOptions} />
-              )}
-              {textId == "flat" && <FlatScene text={text} />}
+              <Render
+                textId={textId}
+                text={text}
+                size={size}
+                options={options}
+                isRender={false}
+              />
             </div>
 
             <div className="flex w-full justify-center">
