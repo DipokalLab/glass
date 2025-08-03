@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:server": "nodemon renderdist/app.cjs",
     "build": "tsc -b && vite build",
+    "build:server": "tsc -p render/tsconfig.json",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -28,8 +30,12 @@
     "@react-three/postprocessing": "^3.0.4",
     "@tailwindcss/vite": "^4.1.10",
     "@types/three": "^0.178.1",
+    "body-parser": "^2.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "lucide-react": "^0.522.0",
     "maath": "^0.10.8",
     "react": "^19.1.0",

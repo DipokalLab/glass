@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../renderdist",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": "."
+  },
+  "include": ["src/**/*.cts"],
+  "exclude": ["node_modules"]
+}
