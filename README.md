@@ -1,6 +1,6 @@
 <p align='center'>
 <h1 align='center'>✨ glass</h1>
-<p align='center'>A collection of 3D typo effects</p>
+<p align='center'>A collection of 3D text effects</p>
 </p>
 
 <p align='center'>
@@ -11,17 +11,17 @@
 
 ## About
 
-A collection of 3D typography ready for immediate use on the web. Easily output as images. Built with Three.js.
+A collection of 3D text effects ready for immediate use on the web. Easily output as images. Built with Three.js.
 
-Customize typography to your liking and export it as an image. Enter your own custom text to download the generated image.
+Customize text to your liking and export it as an image. Enter your own custom text to download the generated image.
 
 > [!NOTE]
-> 📢 <strong>This project is actively maintained and continuously updated.</strong> We are constantly adding new typography effects to expand support.
+> 📢 <strong>This project is actively maintained and continuously updated.</strong> We are constantly adding new text effects to expand support.
 
 ## Roadmap
 
 - [x] Create Image
-- [x] Typo Option
+- [x] Text Option
 - [ ] Create Video
 - [ ] Add Animation Effects
 - [ ] Intro Preset

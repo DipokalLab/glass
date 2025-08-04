@@ -14,7 +14,10 @@ export const renderController = {
 
       await page.setViewport({ width: 1080, height: 1080 });
 
-      await page.goto("https://www.google.com", { waitUntil: "networkidle2" });
+      await page.goto(
+        "https://glass.fleet.im/render/glass?text=sdf&option=bloomIntensity=1.5:chromaticAberration=0.001",
+        { waitUntil: "networkidle2" }
+      );
 
       const pageTitle = await page.title();
       await page.screenshot({ path: "render_result.png" });
