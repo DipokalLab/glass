@@ -6,6 +6,12 @@ export type CircularSelectItem = {
   title: string;
 };
 
+const SPACING = 92; // vertical distance between items (px) — > thumb size, no overlap
+const ANGLE_STEP = 0.42; // radians of arc per item step
+const CURVE_RADIUS = 78; // how far the arc bows horizontally (px)
+const EASE = 0.2; // animation easing factor per frame (0..1)
+const WHEEL_THRESHOLD = 28; // accumulated deltaY before stepping
+
 export function CircularSelect({
   items,
   value,
@@ -15,71 +21,110 @@ export function CircularSelect({
   value: number;
   onChange: (index: number) => void;
 }) {
-  // Fractional offset used only while dragging for a smooth scrub feel.
-  const [drag, setDrag] = useState(0);
-  const [height, setHeight] = useState(0);
-  const dragging = useRef(false);
-  const startY = useRef(0);
-  const startValue = useRef(0);
+  // `offset` is the animated, fractional position of the wheel. The selected
+  // index is the integer target it eases toward.
+  const [offset, setOffset] = useState(value);
+  const offsetRef = useRef(value);
+  const targetRef = useRef(value);
+  const rafRef = useRef<number | null>(null);
+  const draggingRef = useRef(false);
+  const dragStartY = useRef(0);
+  const dragStartOffset = useRef(value);
+  const wheelAccum = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const clamp = (n: number) => Math.max(0, Math.min(items.length - 1, n));
-  const currentOffset = dragging.current ? value + drag : value;
 
-  // The wheel sits on a circle whose diameter matches the container height,
-  // and items are spread evenly across that full height (not bunched up).
-  const spacing = height / (items.length + 1);
-  const radius = height; // large radius => gentle, height-sized arc
+  const setOffsetImmediate = (next: number) => {
+    offsetRef.current = next;
+    setOffset(next);
+  };
 
-  // Track the container height so the layout always fills it.
+  // rAF loop: ease offset -> target, then stop.
+  const tick = () => {
+    const diff = targetRef.current - offsetRef.current;
+    if (Math.abs(diff) < 0.0008) {
+      setOffsetImmediate(targetRef.current);
+      rafRef.current = null;
+      return;
+    }
+    setOffsetImmediate(offsetRef.current + diff * EASE);
+    rafRef.current = requestAnimationFrame(tick);
+  };
+
+  const startAnimation = () => {
+    if (rafRef.current == null) rafRef.current = requestAnimationFrame(tick);
+  };
+
+  const stopAnimation = () => {
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  };
+
+  // Animate toward externally-driven value changes (e.g. mobile sidebar).
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const update = () => setHeight(el.clientHeight);
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+    if (draggingRef.current) return;
+    if (Math.round(targetRef.current) === value) return;
+    targetRef.current = value;
+    startAnimation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
-  // Prevent the page from scrolling while the wheel handles the event.
+  useEffect(() => () => stopAnimation(), []);
+
+  // Wheel: accumulate delta then step one item at a time.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const dir = e.deltaY > 0 ? 1 : -1;
-      onChange(clamp(value + dir));
+      wheelAccum.current += e.deltaY;
+      if (Math.abs(wheelAccum.current) < WHEEL_THRESHOLD) return;
+
+      const dir = wheelAccum.current > 0 ? 1 : -1;
+      wheelAccum.current = 0;
+      const next = clamp(Math.round(targetRef.current) + dir);
+      if (next === Math.round(targetRef.current)) return;
+      targetRef.current = next;
+      startAnimation();
+      onChange(next);
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, items.length]);
+  }, [items.length]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    dragging.current = true;
-    startY.current = e.clientY;
-    startValue.current = value;
-    setDrag(0);
+    draggingRef.current = true;
+    dragStartY.current = e.clientY;
+    dragStartOffset.current = offsetRef.current;
+    stopAnimation();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
-    const dy = e.clientY - startY.current;
-    // Drag down => move toward later items (offset decreases visually).
-    setDrag(spacing ? -dy / spacing : 0);
+    if (!draggingRef.current) return;
+    const dy = e.clientY - dragStartY.current;
+    // Direct 1:1 follow while dragging (drag down => earlier items).
+    const next = clamp(dragStartOffset.current - dy / SPACING);
+    targetRef.current = next;
+    setOffsetImmediate(next);
   };
 
   const handlePointerUp = () => {
-    if (!dragging.current) return;
-    dragging.current = false;
-    const snapped = clamp(Math.round(startValue.current + drag));
-    setDrag(0);
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    const snapped = clamp(Math.round(offsetRef.current));
+    targetRef.current = snapped;
+    startAnimation();
     onChange(snapped);
   };
+
+  const selectedIndex = Math.round(offset);
 
   return (
     <div
@@ -91,31 +136,36 @@ export function CircularSelect({
       className="relative h-full w-full select-none touch-none overflow-hidden cursor-grab active:cursor-grabbing"
     >
       {items.map((item, index) => {
-        const delta = index - currentOffset;
-        const translateY = delta * spacing;
-        // x follows a true circular arc of the given radius for this y offset.
-        const translateX = -(radius - Math.sqrt(Math.max(0, radius * radius - translateY * translateY)));
-        const scale = Math.max(0.55, 1 - Math.abs(delta) * 0.18);
-        const opacity = Math.max(0.25, 1 - Math.abs(delta) * 0.35);
-        const isSelected = Math.round(currentOffset) === index;
+        const delta = index - offset;
+        const absDelta = Math.abs(delta);
+
+        const translateY = delta * SPACING;
+        // Convex arc: center item bows toward the editor, others curve back.
+        const angle = delta * ANGLE_STEP;
+        const translateX = -(1 - Math.cos(angle)) * CURVE_RADIUS;
+
+        const scale = Math.max(0.55, 1 - absDelta * 0.13);
+        const opacity = Math.max(0, 1 - absDelta * 0.32);
+        const isSelected = index === selectedIndex;
 
         return (
           <button
             key={item.id}
             type="button"
-            onClick={() => onChange(index)}
-            style={{
-              transform: `translate(-50%, -50%) translate(${translateX}px, ${translateY}px) scale(${scale})`,
-              opacity,
-              zIndex: items.length - Math.round(Math.abs(delta)),
-              transition: dragging.current
-                ? "none"
-                : "transform 0.35s ease, opacity 0.35s ease",
+            onClick={() => {
+              targetRef.current = index;
+              startAnimation();
+              onChange(index);
             }}
-            className="absolute left-1/2 top-1/2 flex flex-col items-center gap-1"
+            style={{
+              transform: `translateY(-50%) translate(${translateX}px, ${translateY}px) scale(${scale})`,
+              opacity,
+              zIndex: items.length - Math.round(absDelta),
+            }}
+            className="absolute left-4 top-1/2 flex items-center"
           >
             <div
-              className={`h-20 w-20 overflow-hidden rounded-xl border-2 bg-neutral-100 dark:bg-neutral-900 ${
+              className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 bg-neutral-100 dark:bg-neutral-900 ${
                 isSelected
                   ? "border-black ring-4 ring-black/10 dark:border-white dark:ring-white/15"
                   : "border-neutral-300 dark:border-neutral-700"
@@ -129,7 +179,7 @@ export function CircularSelect({
               />
             </div>
             {isSelected && (
-              <span className="whitespace-nowrap text-xs font-medium text-black dark:text-white">
+              <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap text-sm font-semibold text-black dark:text-white">
                 {item.title}
               </span>
             )}

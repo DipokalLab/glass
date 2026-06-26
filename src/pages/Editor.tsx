@@ -273,7 +273,7 @@ export default function EditorPage() {
           selectedEffectId={textId}
           onSelectEffect={handleSelectById}
         />
-        <div className="absolute left-0 top-15 bottom-0 z-10 hidden w-32 sm:w-44 lg:block">
+        <div className="absolute left-0 top-15 bottom-0 z-10 hidden w-64 lg:block">
           <CircularSelect
             items={items}
             value={selectedIndex}
