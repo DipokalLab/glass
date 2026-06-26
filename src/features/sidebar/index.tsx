@@ -2,9 +2,23 @@ import { Package, Menu, CircleQuestionMark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
-export const Sidebar = () => {
+type EffectItem = { id: string; title: string };
+
+export const Sidebar = ({
+  effects,
+  selectedEffectId,
+  onSelectEffect,
+  mobileOnly = false,
+}: {
+  effects?: EffectItem[];
+  selectedEffectId?: string;
+  onSelectEffect?: (id: string) => void;
+  mobileOnly?: boolean;
+} = {}) => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const menuItems = [
     { name: "Editor", icon: Package, path: "/" },
@@ -17,25 +31,61 @@ export const Sidebar = () => {
         {menuItems.map((item) => (
           <a
             key={item.name}
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+              navigate(item.path);
+              setOpen(false);
+            }}
             className="flex items-center px-3 hover:px-4 py-2 mt-2 text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-slate-900 duration-150 cursor-pointer"
           >
             <item.icon className="w-5 h-5 mr-3" />
             {item.name}
           </a>
         ))}
+
+        {effects && effects.length > 0 && (
+          <div className="mt-4">
+            <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+              Effects
+            </p>
+            {effects.map((effect) => (
+              <a
+                key={effect.id}
+                onClick={() => {
+                  onSelectEffect?.(effect.id);
+                  setOpen(false);
+                }}
+                className={`flex items-center gap-3 px-3 hover:px-4 py-2 mt-1 text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-slate-900 duration-150 cursor-pointer ${
+                  selectedEffectId === effect.id
+                    ? "bg-neutral-200 dark:bg-slate-900"
+                    : ""
+                }`}
+              >
+                <img
+                  src={`/imglist/${effect.id}.png`}
+                  alt={effect.title}
+                  className="h-8 w-8 rounded-md object-cover"
+                />
+                {effect.title}
+              </a>
+            ))}
+          </div>
+        )}
       </nav>
     </div>
   );
 
   return (
     <>
-      <div className="hidden  lg:block w-64 shrink-0"></div>
-      <div className="hidden fixed h-full lg:block w-64 bg-white border-r border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
-        {sidebarContent}
-      </div>
+      {!mobileOnly && (
+        <>
+          <div className="hidden  lg:block w-64 shrink-0"></div>
+          <div className="hidden fixed h-full lg:block w-64 bg-white border-r border-neutral-200 dark:bg-black dark:border-neutral-800 shrink-0">
+            {sidebarContent}
+          </div>
+        </>
+      )}
       <div className="lg:hidden">
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"

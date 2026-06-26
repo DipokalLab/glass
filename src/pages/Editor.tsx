@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
 import { Download, SlidersHorizontal } from "lucide-react";
@@ -92,6 +93,11 @@ export default function EditorPage() {
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
     setOptions(optionsForId(items[index].id));
+  };
+
+  const handleSelectById = (id: string) => {
+    const index = items.findIndex((item) => item.id === id);
+    if (index >= 0) handleSelect(index);
   };
 
   const handleStartRecording = () => {
@@ -187,15 +193,21 @@ export default function EditorPage() {
   return (
     <>
       <Navbar />
-      <div className="flex w-screen h-screen bg-white dark:bg-black pt-15">
-        <div className="w-32 shrink-0 sm:w-44">
+      <div className="relative w-screen h-screen bg-white dark:bg-black pt-15">
+        <Sidebar
+          mobileOnly
+          effects={items}
+          selectedEffectId={textId}
+          onSelectEffect={handleSelectById}
+        />
+        <div className="absolute left-0 top-15 bottom-0 z-10 hidden w-32 sm:w-44 lg:block">
           <CircularSelect
             items={items}
             value={selectedIndex}
             onChange={handleSelect}
           />
         </div>
-        <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="flex h-full w-full items-center justify-center overflow-hidden">
           <main className="flex flex-col p-6 justify-center items-center gap-2">
             <div className="flex w-full justify-center p-4">
               <Render
