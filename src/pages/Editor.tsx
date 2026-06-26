@@ -55,6 +55,51 @@ const items = [
     title: "Flat",
     description: "Flat 3d text image.",
   },
+  {
+    id: "chrome",
+    title: "Chrome",
+    description: "Reflective metallic chrome.",
+  },
+  {
+    id: "gold",
+    title: "Gold Foil",
+    description: "Warm luxurious gold metal.",
+  },
+  {
+    id: "holographic",
+    title: "Holographic",
+    description: "Iridescent rainbow sheen.",
+  },
+  {
+    id: "neon",
+    title: "Neon",
+    description: "Glowing neon tubes on dark.",
+  },
+  {
+    id: "toon",
+    title: "Toon",
+    description: "Cel-shaded cartoon outline.",
+  },
+  {
+    id: "matcap",
+    title: "Matcap",
+    description: "Baked-lighting stylized look.",
+  },
+  {
+    id: "wobble",
+    title: "Wobble",
+    description: "Gooey jelly wobble animation.",
+  },
+  {
+    id: "glitch",
+    title: "Glitch",
+    description: "Digital RGB-shift glitch.",
+  },
+  {
+    id: "pixel",
+    title: "Pixel",
+    description: "Retro pixelated CRT look.",
+  },
 ];
 
 const optionsForId = (id: string) => {
@@ -71,6 +116,34 @@ const optionsForId = (id: string) => {
       chromaticAberration: 0.001,
       distortSpeed: 5,
     };
+  }
+
+  if (id == "chrome") {
+    return { roughness: 0.1 };
+  }
+
+  if (id == "gold") {
+    return { roughness: 0.25 };
+  }
+
+  if (id == "holographic") {
+    return { iridescenceIOR: 1.8, roughness: 0.2 };
+  }
+
+  if (id == "neon") {
+    return { glowIntensity: 2.5, color: "#39ff14" };
+  }
+
+  if (id == "toon") {
+    return { color: "#ff6090", outlineThickness: 0.025 };
+  }
+
+  if (id == "wobble") {
+    return { factor: 0.6, speed: 1 };
+  }
+
+  if (id == "pixel") {
+    return { granularity: 8 };
   }
 
   return {};

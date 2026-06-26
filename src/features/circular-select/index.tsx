@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { EffectThumb } from "@/components/effect-thumb";
 
 export type CircularSelectItem = {
   id: string;
@@ -120,9 +121,9 @@ export function CircularSelect({
                   : "border-neutral-300 dark:border-neutral-700"
               }`}
             >
-              <img
-                src={`/imglist/${item.id}.png`}
-                alt={item.title}
+              <EffectThumb
+                id={item.id}
+                title={item.title}
                 draggable={false}
                 className="h-full w-full object-cover"
               />

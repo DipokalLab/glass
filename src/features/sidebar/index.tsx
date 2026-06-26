@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { EffectThumb } from "@/components/effect-thumb";
 
 type EffectItem = { id: string; title: string };
 
@@ -60,9 +61,9 @@ export const Sidebar = ({
                     : ""
                 }`}
               >
-                <img
-                  src={`/imglist/${effect.id}.png`}
-                  alt={effect.title}
+                <EffectThumb
+                  id={effect.id}
+                  title={effect.title}
                   className="h-8 w-8 rounded-md object-cover"
                 />
                 {effect.title}
