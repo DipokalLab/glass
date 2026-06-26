@@ -4,7 +4,7 @@
 </p>
 
 <p align='center'>
-<a href="https://glass.fleet.im/">Visit Website</a> · <a href="https://github.com/DipokalLab/glass/issues">Report Bugs</a>
+<a href="https://glass.fleet.im/">Visit Website</a> · <a href="https://github.com/hjunhuh/glass/issues">Report Bugs</a>
 </p>
 
 ![img](./.github/screenshot.png)
@@ -29,7 +29,7 @@ Customize text to your liking and export it as an image. Enter your own custom t
 
 ## Contributors
 
-Hyeong Jun Huh [(GitHub)](https://github.com/DipokalLab)
+Hyeong Jun Huh [(GitHub)](https://github.com/hjunhuh)
 
 ## License
 

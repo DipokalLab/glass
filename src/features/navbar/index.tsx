@@ -23,7 +23,7 @@ export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => window.open("https://github.com/DipokalLab/glass")}
+          onClick={() => window.open("https://github.com/hjunhuh/glass")}
         >
           <FaGithub />
         </Button>

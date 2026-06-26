@@ -15,7 +15,7 @@ export default function CreditPage() {
             </h1>
             <br />
             <a
-              href="https://github.com/DipokalLab/"
+              href="https://github.com/hjunhuh/"
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-1"

@@ -27,7 +27,7 @@ export default function LandingPage() {
                   variant="outline"
                   size="lg"
                   onClick={() =>
-                    window.open("https://github.com/DipokalLab/glass")
+                    window.open("https://github.com/hjunhuh/glass")
                   }
                 >
                   GitHub
