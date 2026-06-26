@@ -6,7 +6,6 @@ import { ThemeProvider } from "./components/theme-provider";
 import ListsPage from "./pages/Lists";
 import CreditPage from "./pages/Credit";
 import CapturePage from "./pages/Capture";
-import LandingPage from "./pages/Main";
 import RenderPage from "./pages/Render";
 
 createRoot(document.getElementById("root")!).render(
@@ -14,8 +13,7 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
-          <Route index element={<LandingPage />} />
-          <Route path="list" element={<ListsPage />} />
+          <Route index element={<ListsPage />} />
           <Route path="credit" element={<CreditPage />} />
 
           <Route path="capture/*" element={<CapturePage />} />
@@ -23,5 +21,5 @@ createRoot(document.getElementById("root")!).render(
         </Routes>
       </ThemeProvider>
     </StrictMode>
-  </BrowserRouter>
+  </BrowserRouter>,
 );

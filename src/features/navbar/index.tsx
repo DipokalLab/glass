@@ -29,7 +29,7 @@ export const Navbar = ({ isShowLogo = false }: { isShowLogo?: boolean }) => {
         </Button>
 
         <Button asChild>
-          <Link to="/list">Get Started</Link>
+          <Link to="/">Get Started</Link>
         </Button>
       </nav>
     </header>
