@@ -7,7 +7,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: "Lists", icon: Package, path: "/" },
+    { name: "Editor", icon: Package, path: "/" },
     { name: "Credit", icon: CircleQuestionMark, path: "/credit" },
   ];
 

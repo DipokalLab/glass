@@ -3,9 +3,8 @@ import { createRoot } from "react-dom/client";
 import { Routes, Route, BrowserRouter } from "react-router";
 import "./index.css";
 import { ThemeProvider } from "./components/theme-provider";
-import ListsPage from "./pages/Lists";
+import EditorPage from "./pages/Editor";
 import CreditPage from "./pages/Credit";
-import CapturePage from "./pages/Capture";
 import RenderPage from "./pages/Render";
 
 createRoot(document.getElementById("root")!).render(
@@ -13,10 +12,9 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
-          <Route index element={<ListsPage />} />
+          <Route index element={<EditorPage />} />
           <Route path="credit" element={<CreditPage />} />
 
-          <Route path="capture/*" element={<CapturePage />} />
           <Route path="render/*" element={<RenderPage />} />
         </Routes>
       </ThemeProvider>

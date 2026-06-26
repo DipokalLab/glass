@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Sidebar } from "@/features/sidebar";
 import { Navbar } from "@/features/navbar";
 import { useCanvasImageDownloader } from "@/hooks/useCanvasImage";
 import { Download, SlidersHorizontal } from "lucide-react";
@@ -32,41 +31,67 @@ import {
 import { calculateAspectRatio } from "@/lib/utils";
 import { useResolutionStore } from "@/features/canvas/store";
 import { Render } from "@/features/render";
+import { CircularSelect } from "@/features/circular-select";
 
-export default function CapturePage() {
-  const [textId, setTextId] = useState("");
+const items = [
+  {
+    id: "glow",
+    title: "Glow Effect",
+    description: "A subtle and radiant glow effect.",
+  },
+  {
+    id: "glass",
+    title: "Glassmorphism",
+    description: "An effect that mimics a frosted glass texture.",
+  },
+  {
+    id: "distort",
+    title: "Distortion Effect",
+    description: "An effect that warps and distorts the image.",
+  },
+  {
+    id: "flat",
+    title: "Flat",
+    description: "Flat 3d text image.",
+  },
+];
+
+const optionsForId = (id: string) => {
+  if (id == "glow") {
+    return {
+      bloomIntensity: 1.5,
+      chromaticAberration: 0.001,
+    };
+  }
+
+  if (id == "distort") {
+    return {
+      bloomIntensity: 1.5,
+      chromaticAberration: 0.001,
+      distortSpeed: 5,
+    };
+  }
+
+  return {};
+};
+
+export default function EditorPage() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [text, setText] = useState("Glass");
   const [duration] = useState(2000);
   const [isRecording, setIsRecording] = useState(false);
   const [size] = useState(1024);
   const { width, height, setResolution } = useResolutionStore();
   const [progress, setProgress] = useState(0);
-  const [options, setOptions] = useState({});
+  const [options, setOptions] = useState<object>(optionsForId(items[0].id));
   const { startRecording } = useCanvasRecorder("maincanvas");
   const { downloadImage } = useCanvasImageDownloader("maincanvas");
 
-  useEffect(() => {
-    const split = window.location.pathname.split("/");
-    const id = split[split.length - 1];
-    setOptionsMatch(id);
-    setTextId(id);
-  }, []);
+  const textId = items[selectedIndex].id;
 
-  const setOptionsMatch = (id: string) => {
-    if (id == "glow") {
-      setOptions({
-        bloomIntensity: 1.5,
-        chromaticAberration: 0.001,
-      });
-    }
-
-    if (id == "distort") {
-      setOptions({
-        bloomIntensity: 1.5,
-        chromaticAberration: 0.001,
-        distortSpeed: 5,
-      });
-    }
+  const handleSelect = (index: number) => {
+    setSelectedIndex(index);
+    setOptions(optionsForId(items[index].id));
   };
 
   const handleStartRecording = () => {
@@ -162,8 +187,14 @@ export default function CapturePage() {
   return (
     <>
       <Navbar />
-      <div className="flex w-screen h-screen bg-white dark:bg-black  pt-15">
-        <Sidebar />
+      <div className="flex w-screen h-screen bg-white dark:bg-black pt-15">
+        <div className="w-32 shrink-0 sm:w-44">
+          <CircularSelect
+            items={items}
+            value={selectedIndex}
+            onChange={handleSelect}
+          />
+        </div>
         <div className="flex flex-col flex-1 overflow-hidden">
           <main className="flex flex-col p-6 justify-center items-center gap-2">
             <div className="flex w-full justify-center p-4">
@@ -250,17 +281,6 @@ export default function CapturePage() {
                 </DropdownMenu>
               </div>
             </div>
-
-            {/* <Slider
-              value={[duration]}
-              onValueChange={(value) => setDuration(value[0])}
-              min={1000}
-              max={10000}
-              step={500}
-            />
-            {duration} */}
-
-            {/* <Button onClick={handleStartRecording}>Record</Button> */}
 
             <Dialog open={isRecording} onOpenChange={setIsRecording}>
               <DialogContent className="sm:max-w-[425px]">
